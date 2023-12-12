@@ -19,5 +19,5 @@ setup(
             "plotly",
       ],
       packages=find_packages(),
-      package_data={'util': ['data/*']},
+      package_data={'medalgrouputils': ['data/*']},
 )
