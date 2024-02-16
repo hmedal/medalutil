@@ -8,7 +8,7 @@ Created on Wed Dec  6 12:38:45 2023
 import sys
 from gurobipy import GRB
 
-def handleGurobiStatus(m):
+def handleGurobiStatus(m : gp.Model):
     '''
     
     Parameters
@@ -21,13 +21,23 @@ def handleGurobiStatus(m):
     None.
 
     '''
-    status = m.Status
-    print("status", status)
-    if status == GRB.UNBOUNDED:
-        print('The model cannot be solved because it is unbounded')
+
+    status = m.status
+    if status == GRB.Status.INFEASIBLE:
+        print("The model is infeasible. Computing IIS.")
+        m.computeIIS()
+        m.write('iismodel.ilp')
         sys.exit(0)
-    if status == GRB.INFEASIBLE:
-        print('Optimization was stopped with status infeasible')
+    elif status == GRB.Status.UNBOUNDED:
+        print("The model is unbounded.")
+        sys.exit(0)
+    elif status == GRB.Status.OPTIMAL:
+        print("The model is optimal.")
+    elif status == GRB.Status.INF_OR_UNBD:  
+        print("The model status is infeasible or unbounded. Set DualReductions parameter to 0 and reoptimize.")
+        sys.exit(0)
+    else:
+        print("The model status is neither infeasible nor unbounded.")
         sys.exit(0)
         
 def setGurobiParams(m, paramsDict):
