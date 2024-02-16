@@ -6,6 +6,11 @@ Created on Mon Oct  3 09:56:46 2022
 @author: hughdeep
 """
 
+import networkx as nx
+
+def pred(G : nx.Graph, node):
+    return [pred for pred in G.predecessors(node)][0]
+
 def my_draw_networkx_edge_labels(
     G,
     pos,
