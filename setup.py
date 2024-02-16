@@ -18,6 +18,5 @@ setup(
             "pandas",
             "plotly",
       ],
-      packages=find_packages(),
-      package_data={'medalgrouputils': ['data/*']},
+      packages=["medalgrouputils"],
 )
